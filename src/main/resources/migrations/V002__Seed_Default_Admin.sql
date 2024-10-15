@@ -1,0 +1,2 @@
+﻿INSERT INTO users (created_at, updated_at, full_name, email, role, password)
+VALUES (NOW(), NOW(), 'Default Admin', 'default_admin@gmail.com', 'Admin', '$2a$10$lVnQlbQjhYgJm4VDjtoqtOq1F3OFdMkpTtmZglBtKvTPPxGR9PL06');

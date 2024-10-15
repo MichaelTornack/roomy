@@ -1,0 +1,29 @@
+﻿version: '3.3'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'admin'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+
+    healthcheck:
+        test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+        interval: 5s
+        timeout: 5s
+        retries: 55
+
+  roomy-api:
+      build:
+          dockerfile: ./Dockerfile
+      environment:
+          DATABASE_URL: jdbc:mysql://db:3306/db
+      ports:
+          - "8080:8080"
+      depends_on:
+          db:
+              condition: service_healthy
