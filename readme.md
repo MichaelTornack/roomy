@@ -27,3 +27,12 @@ POST /api/auth/login
 
 - use access token for further authentication.
 
+
+## Security
+- jwt security key is currently hard coded in properties. When deployed it should be injected securely
+
+## Next steps
+- implement last requirements
+- module / integration tests
+- integrate kafka messaging
+

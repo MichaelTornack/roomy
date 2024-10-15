@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "offices")
 @Entity
@@ -39,4 +40,7 @@ public class Office {
     @Getter
     @Setter
     private String name;
+
+    @OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings;
 }
