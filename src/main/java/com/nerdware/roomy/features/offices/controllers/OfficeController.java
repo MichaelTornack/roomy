@@ -17,6 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @RestController
 @RequestMapping("/api/offices")
 @Tag(name = "Offices", description = "API for managing offices")
@@ -34,7 +37,7 @@ public class OfficeController
         throws Exception
     {
         var office = officeService.getOfficeById(id);
-        var officeDto = new OfficeDto(office.getId(), office.getName(), office.getLocation(), office.getCapacity());
+        var officeDto = OfficeDto.toDto(office);
         return new ResponseEntity(officeDto, HttpStatus.OK);
     }
 
@@ -42,10 +45,12 @@ public class OfficeController
     @GetMapping("")
     public ResponseEntity getOffices()
     {
-
         var offices = officeService.getAllOffices();
 
-        return new ResponseEntity(offices, HttpStatus.OK);
+        var officesDto = StreamSupport.stream(offices.spliterator(), false).map((var o) -> OfficeDto.toDto(o))
+            .collect(Collectors.toList());
+
+        return new ResponseEntity(officesDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Create new office")
@@ -63,7 +68,7 @@ public class OfficeController
 
         var office = officeService.createOffice(request, caller);
 
-        var officeDto = new OfficeDto(office.getId(), office.getName(), office.getLocation(), office.getCapacity());
+        var officeDto = OfficeDto.toDto(office);
         return new ResponseEntity(officeDto, HttpStatus.OK);
     }
 
@@ -82,7 +87,7 @@ public class OfficeController
 
         var office = officeService.updateOffice(id, request, caller);
 
-        var officeDto = new OfficeDto(office.getId(), office.getName(), office.getLocation(), office.getCapacity());
+        var officeDto = OfficeDto.toDto(office);
         return new ResponseEntity(officeDto, HttpStatus.OK);
     }
 

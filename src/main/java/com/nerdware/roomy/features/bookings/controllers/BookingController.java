@@ -5,6 +5,7 @@ import com.nerdware.roomy.domain.exceptions.BadRequestException;
 import com.nerdware.roomy.features.bookings.dtos.requests.CreateBookingDto;
 import com.nerdware.roomy.features.bookings.dtos.requests.GetBookingsDto;
 import com.nerdware.roomy.features.bookings.dtos.requests.UpdateBookingDto;
+import com.nerdware.roomy.features.bookings.dtos.responses.BookingDto;
 import com.nerdware.roomy.features.bookings.services.BookingService;
 import com.nerdware.roomy.features.bookings.validators.CreateBookingValidator;
 import com.nerdware.roomy.features.bookings.validators.UpdateBookingValidator;
@@ -47,7 +48,7 @@ public class BookingController
 
         var request = new GetBookingsDto(officeId, userId);
         var bookings = bookingsService.getBookings(request);
-        var bookingDtos = BookingService.toDto(bookings);
+        var bookingDtos = BookingDto.toDto(bookings);
 
         return new ResponseEntity(bookingDtos, HttpStatus.OK);
     }
@@ -62,7 +63,7 @@ public class BookingController
 
         var request = new GetBookingsDto(Optional.empty(), userId);
         var bookings = bookingsService.getBookings(request);
-        var bookingDtos = BookingService.toDto(bookings);
+        var bookingDtos = BookingDto.toDto(bookings);
 
         return new ResponseEntity(bookingDtos, HttpStatus.OK);
     }
@@ -75,7 +76,7 @@ public class BookingController
     {
 
         var booking = bookingsService.getBookingById(id);
-        var bookingDto = BookingService.toDto(booking);
+        var bookingDto = BookingDto.toDto(booking);
         return new ResponseEntity(bookingDto, HttpStatus.OK);
     }
 
@@ -93,7 +94,7 @@ public class BookingController
         var caller = (User) authentication.getPrincipal();
 
         var booking = bookingsService.createBooking(request, caller);
-        var bookingDto = BookingService.toDto(booking);
+        var bookingDto = BookingDto.toDto(booking);
         return new ResponseEntity(bookingDto, HttpStatus.OK);
     }
 
@@ -120,7 +121,7 @@ public class BookingController
         var caller = (User) authentication.getPrincipal();
         var booking = bookingsService.updateBooking(id, request, caller);
 
-        var bookingDto = BookingService.toDto(booking);
+        var bookingDto = BookingDto.toDto(booking);
         return new ResponseEntity(bookingDto, HttpStatus.OK);
     }
 }

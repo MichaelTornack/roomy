@@ -142,16 +142,4 @@ public class BookingService {
 
         return bookingRepository.save(booking);
     }
-
-    public static BookingDto toDto(Booking booking)
-    {
-        return new BookingDto(booking.getId(), booking.getUserId(), booking.getOfficeId(), booking.getDate());
-    }
-
-    public static List<BookingDto> toDto(Iterable<Booking> bookings)
-    {
-        return StreamSupport.stream(bookings.spliterator(), false)
-            .map(entity -> toDto(entity))
-            .collect(Collectors.toList());
-    }
 }

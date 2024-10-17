@@ -46,18 +46,18 @@ public class UserService
 
     public User getUserById(Integer id) throws ResourceNotFoundException
     {
-        var user = userRepository.findById(id);
-        if(!user.isPresent()) throw new ResourceNotFoundException("User not found");
-        return user.get();
+        var user = userRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        return user;
     }
 
     public User updateUser(Integer id, UpdateUserDto request, User caller) throws Exception
     {
-        var userResult = userRepository.findById(id);
-        if(!userResult.isPresent())
-            throw new ResourceNotFoundException("User not found");
-
-        var user = userResult.get();
+        var user = userRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if(caller.getId() != user.getId() && caller.getRole() != UserRole.Admin)
             throw new UnauthorizedException("You do not have permission to update user");
@@ -90,9 +90,9 @@ public class UserService
         if(caller.getRole() != UserRole.Admin)
             throw new UnauthorizedException("You do not have permission to delete a user");
 
-        var userResult = userRepository.findById(id);
-        if(!userResult.isPresent())
-            throw new ResourceNotFoundException("User not found");
+        var user = userRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         userRepository.deleteById(id);
     }

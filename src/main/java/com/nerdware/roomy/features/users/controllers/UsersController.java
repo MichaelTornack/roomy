@@ -35,7 +35,7 @@ public class UsersController
     public ResponseEntity getUser(@PathVariable Integer id) throws ResourceNotFoundException
     {
         var user = userService.getUserById(id);
-        var userDto = new UserDto(user.getId(), user.getEmail(), user.getRole());
+        var userDto = UserDto.toDto(user);
         return new ResponseEntity(userDto, HttpStatus.OK);
     }
 
@@ -53,7 +53,7 @@ public class UsersController
             throw new BadRequestException(validatorErrors);
 
         var user = userService.createUser(request, caller);
-        var userDto = new UserDto(user.getId(), user.getEmail(), user.getRole());
+        var userDto = UserDto.toDto(user);
         return new ResponseEntity(userDto, HttpStatus.OK);
     }
 
@@ -72,7 +72,7 @@ public class UsersController
 
         var updated = userService.updateUser(id, request, caller);
 
-        var userDto = new UserDto(updated.getId(), updated.getEmail(), updated.getRole());
+        var userDto = UserDto.toDto(updated);
         return new ResponseEntity(userDto, HttpStatus.OK);
     }
 

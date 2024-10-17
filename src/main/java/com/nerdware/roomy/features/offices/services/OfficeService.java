@@ -39,12 +39,10 @@ public class OfficeService
         return officeRepository.findAll();
     }
 
-    public Office getOfficeById(Integer id) throws Exception {
-        var officeResult = officeRepository.findById(id);
-        if(!officeResult.isPresent())
-            throw new ResourceNotFoundException("Office not found");
-
-        return officeResult.get();
+    public Office getOfficeById(Integer id) throws Exception
+    {
+        var office = officeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Office not found"));
+        return office;
     }
 
     public void deleteOffice(Integer id, User caller)
@@ -53,10 +51,7 @@ public class OfficeService
         if(caller.getRole() != UserRole.Admin)
             throw new UnauthorizedException("You do not have permission to delete an office");
 
-        var officeResult = officeRepository.findById(id);
-        if(!officeResult.isPresent())
-            throw new ResourceNotFoundException("Office not found");
-
+        var office = officeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Office not found"));
         officeRepository.deleteById(id);
     }
 
@@ -66,11 +61,7 @@ public class OfficeService
         if(caller.getRole() != UserRole.Admin)
             throw new UnauthorizedException("You do not have permission to update an office");
 
-        var officeResult = officeRepository.findById(id);
-        if(!officeResult.isPresent())
-            throw new ResourceNotFoundException("Office not found");
-
-        var office = officeResult.get();
+        var office = officeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Office not found"));
 
         if(request.capacity() != null)
             office.setCapacity(request.capacity());
