@@ -27,12 +27,14 @@ POST /api/auth/login
 
 - use access token for further authentication.
 
+## Integration Tests
+- uses TestContainer for MySql database
+- shows how to setup test with different test users
+
 
 ## Security
 - jwt security key is currently hard coded in properties. When deployed it should be injected securely
 
 ## Next steps
-- implement last requirements
-- module / integration tests
 - integrate kafka messaging
 

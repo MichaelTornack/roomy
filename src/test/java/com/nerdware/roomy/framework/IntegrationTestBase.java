@@ -45,7 +45,6 @@ public class IntegrationTestBase
     {
         // is called before every test
         // is called after constructor of IntegrationTestBase
-        int i = 0;
     }
 
     @AfterEach
