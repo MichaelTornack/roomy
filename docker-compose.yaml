@@ -17,11 +17,28 @@ services:
         timeout: 5s
         retries: 55
 
+  zookeeper:
+      image: 'confluentinc/cp-zookeeper:latest'
+      environment:
+          ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+      image: 'confluentinc/cp-kafka:latest'
+      depends_on:
+          - zookeeper
+      ports:
+          - '9092:9092'
+      environment:
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
   roomy-api:
       build:
           dockerfile: ./Dockerfile
       environment:
           DATABASE_URL: jdbc:mysql://db:3306/db
+          KAFKA_URL: kafka:9092
       ports:
           - "8080:8080"
       depends_on:
